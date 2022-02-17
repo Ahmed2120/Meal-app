@@ -1,39 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/modules/meal.dart';
+import 'package:food_app/providers/meal_provider.dart';
 import 'package:food_app/screens/categories_screen.dart';
 import 'package:food_app/screens/filters.dart';
 import 'package:food_app/screens/meal_detail.dart';
 import 'package:food_app/screens/meals_by_filter.dart';
 import 'package:food_app/screens/meals_cat.dart';
 import 'package:food_app/screens/tabs.dart';
+import 'package:provider/provider.dart';
 import 'dummy_data.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+  ChangeNotifierProvider(
+    create: (ctx)=>MealProvider(),
+    child: MyApp(),
+  )
+);
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final List<Meal> _favorites = [];
-
-  void toggleFavorite(String mealId){
-    final existingI = _favorites.indexWhere((meal) => meal.id == mealId);
-    if(existingI >= 0){
-      setState(() {
-        _favorites.removeAt(existingI);
-      });
-    }else{
-      setState(() {
-        _favorites.add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
-      });
-    }
-  }
-  bool isFavorite(String mealId){
-    return _favorites.any((meal) => meal.id == mealId);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +29,13 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.black45,
         canvasColor: Color.fromRGBO(215, 215, 209, 1.0),
         textTheme: ThemeData.light().textTheme.copyWith(
-              body1: TextStyle(
+              bodyText1: TextStyle(
                 color: Color.fromRGBO(62, 62, 61, 1.0),
               ),
-              body2: TextStyle(
+              bodyText2: TextStyle(
                 color: Color.fromRGBO(120, 120, 69, 1.0),
               ),
-              title: TextStyle(
+              subtitle1: TextStyle(
                 fontSize: 24,
                 fontFamily: 'RobotoCondensed',
                 fontWeight: FontWeight.bold,
@@ -58,9 +43,9 @@ class _MyAppState extends State<MyApp> {
             ),
       ),
       routes: {
-        '/': (context) => Tabs(_favorites),
+        '/': (context) => Tabs(),
         MealCat.routeName: (context) => MealCat(),
-        MealDetail.routeName: (context) => MealDetail(toggleFavorite, isFavorite),
+        MealDetail.routeName: (context) => MealDetail(),
         Filters.routeName: (context) => Filters(),
         MealsByFilter.routeName: (context) => MealsByFilter(),
       },

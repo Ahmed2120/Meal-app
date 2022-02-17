@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/dummy_data.dart';
+import 'package:food_app/providers/meal_provider.dart';
+import 'package:provider/provider.dart';
 
 class MealDetail extends StatelessWidget {
-
-  final Function toggleFavorite;
-  final Function isFavorite;
-  MealDetail(this.toggleFavorite, this.isFavorite);
 
   static const String routeName = '/meal_detail';
 
@@ -14,7 +12,7 @@ class MealDetail extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Text(
         txt,
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.subtitle1,
       ),
     );
   }
@@ -37,6 +35,7 @@ class MealDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
     final mealDetail = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+    final pro = Provider.of<MealProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,10 +83,10 @@ class MealDetail extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: isFavorite(mealId) ? Colors.white : Theme.of(context).primaryColor,
+        backgroundColor: pro.isFavorite(mealId) ? Colors.white : Theme.of(context).primaryColor,
 
-        child: isFavorite(mealId) ? Icon(Icons.favorite, color: Colors.red,) : Icon(Icons.favorite_border),
-        onPressed: (){toggleFavorite(mealId);},
+        child: pro.isFavorite(mealId) ? Icon(Icons.favorite, color: Colors.red,) : Icon(Icons.favorite_border),
+        onPressed: (){pro.toggleFavorite(mealId);},
       ),
     );
   }
