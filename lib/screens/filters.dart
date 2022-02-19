@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/providers/meal_provider.dart';
 import 'package:food_app/widgets/meal_drawer.dart';
+import 'package:provider/provider.dart';
 
 import 'meals_by_filter.dart';
 
@@ -35,6 +37,8 @@ class _FiltersState extends State<Filters> {
 
   @override
   Widget build(BuildContext context) {
+    final currentFilter = Provider.of<MealProvider>(context).filters;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Filters'),
@@ -52,40 +56,44 @@ class _FiltersState extends State<Filters> {
             child: ListView(
               children: [
                 buildSwitchListTile(
-                    value: isVegetarian,
+                    value: currentFilter['isVegetarian']!,
                     title: 'Vegetarian',
                     subtitle: 'Filter for Vegetarian meals',
                     function: (newValue) {
                       setState(() {
-                        isVegetarian = newValue;
+                        currentFilter['isVegetarian'] = newValue;
                       });
+                      Provider.of<MealProvider>(context, listen: false).setFilters();
                     }),
                 buildSwitchListTile(
-                    value: isVegan,
+                    value: currentFilter['isVegan']!,
                     title: 'Vegan',
                     subtitle: 'Filter for Vegan meals',
                     function: (newValue) {
                       setState(() {
-                        isVegan = newValue;
+                        currentFilter['isVegan'] = newValue;
                       });
+                      Provider.of<MealProvider>(context, listen: false).setFilters();
                     }),
                 buildSwitchListTile(
-                    value: isGlutenFree,
+                    value: currentFilter['isGlutenFree']!,
                     title: 'GlutenFree',
                     subtitle: 'Filter for GlutenFree meals',
                     function: (newValue) {
                       setState(() {
-                        isGlutenFree = newValue;
+                        currentFilter['isGlutenFree'] = newValue;
                       });
+                      Provider.of<MealProvider>(context, listen: false).setFilters();
                     }),
                 buildSwitchListTile(
-                    value: isLactoseFree,
+                    value: currentFilter['isLactoseFree']!,
                     title: 'LactoseFree',
                     subtitle: 'Filter for LactoseFree meals',
                     function: (newValue) {
                       setState(() {
-                        isLactoseFree = newValue;
+                        currentFilter['isLactoseFree'] = newValue;
                       });
+                      Provider.of<MealProvider>(context, listen: false).setFilters();
                     }),
                 Padding(
                   padding: EdgeInsets.all(20),
@@ -115,12 +123,7 @@ class _FiltersState extends State<Filters> {
                     ),
                     onTap: () {
                       Navigator.of(context)
-                          .pushNamed(MealsByFilter.routeName, arguments: {
-                        'isVegetarian': isVegetarian,
-                        'isVegan': isVegan,
-                        'isGlutenFree': isGlutenFree,
-                        'isLactoseFree': isLactoseFree,
-                      });
+                          .pushNamed(MealsByFilter.routeName, arguments: currentFilter);
                     },
                   ),
                 )

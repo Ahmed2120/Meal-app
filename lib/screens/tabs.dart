@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/modules/meal.dart';
+import 'package:food_app/providers/meal_provider.dart';
 import 'package:food_app/screens/categories_screen.dart';
 import 'package:food_app/screens/favorite_screen.dart';
 import 'package:food_app/widgets/meal_drawer.dart';
+import 'package:provider/provider.dart';
 
 class Tabs extends StatefulWidget {
 
@@ -17,6 +19,7 @@ class _TabsState extends State<Tabs> {
 
   @override
   void initState() {
+    Provider.of<MealProvider>(context, listen: false).getData();
     pages = [
       {
         'page': CategoriesScreen(),

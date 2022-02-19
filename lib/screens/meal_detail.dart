@@ -35,7 +35,7 @@ class MealDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
     final mealDetail = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
-    final pro = Provider.of<MealProvider>(context, listen: false);
+    final pro = Provider.of<MealProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -86,7 +86,7 @@ class MealDetail extends StatelessWidget {
         backgroundColor: pro.isFavorite(mealId) ? Colors.white : Theme.of(context).primaryColor,
 
         child: pro.isFavorite(mealId) ? Icon(Icons.favorite, color: Colors.red,) : Icon(Icons.favorite_border),
-        onPressed: (){pro.toggleFavorite(mealId);},
+        onPressed: (){Provider.of<MealProvider>(context, listen: false).toggleFavorite(mealId);},
       ),
     );
   }
