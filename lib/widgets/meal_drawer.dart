@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/providers/meal_provider.dart';
 import 'package:food_app/screens/filters.dart';
+import 'package:provider/provider.dart';
 
 class MealDrawer extends StatelessWidget {
   Widget choose(
-      {required String text, required Icon icon, required Function function}) {
+      {required String text, required Icon icon, required Function function, required BuildContext context}) {
     return ListTile(
       leading: icon,
       title: Text(
         text,
         style: TextStyle(
+          color: Theme.of(context).textTheme.bodyText1!.color,
             fontSize: 25,
             fontFamily: 'RobotoCondensed',
             fontWeight: FontWeight.w600),
@@ -20,6 +23,7 @@ class MealDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      elevation: 0,
       child: Column(
         children: [
           Container(
@@ -41,16 +45,34 @@ class MealDrawer extends StatelessWidget {
           ),
           choose(
               text: 'Categories',
-              icon: Icon(Icons.restaurant),
+              icon: Icon(Icons.restaurant, color: Theme.of(context).buttonColor,),
               function: () {
                 Navigator.of(context).pushReplacementNamed('/');
-              }),
+              }, context: context),
           choose(
               text: 'Filters',
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.settings, color: Theme.of(context).buttonColor,),
               function: () {
                 Navigator.of(context).pushReplacementNamed(Filters.routeName);
-              }),
+              }, context: context),
+          ListTile(
+            leading: Icon(Icons.color_lens_outlined, color: Theme.of(context).buttonColor,),
+            title: Text(
+              'Dark Mode',
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  fontSize: 25,
+                  fontFamily: 'RobotoCondensed',
+                  fontWeight: FontWeight.w600),
+            ),
+            trailing: Switch(
+              value: Provider.of<MealProvider>(context).isDark,
+              activeColor: Theme.of(context).primaryColor,
+              onChanged: (newValue) {
+                Provider.of<MealProvider>(context, listen: false).toggleMode(newValue);
+              },
+            ),
+          )
         ],
       ),
     );

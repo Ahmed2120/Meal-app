@@ -114,20 +114,20 @@ class MealItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.schedule),
+                      Icon(Icons.schedule, color: Theme.of(context).buttonColor,),
                       SizedBox(width: 6,),
                       Text('$duration min')
                     ],
                   ), Row(
                     children: [
-                      Icon(Icons.work),
+                      Icon(Icons.work, color: Theme.of(context).buttonColor,),
                       SizedBox(width: 6,),
                       Text('$complexityTxt')
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(Icons.attach_money),
+                      Icon(Icons.attach_money, color: Theme.of(context).buttonColor,),
                       SizedBox(width: 6,),
                       Text('$affordabilityTxt')
                     ],

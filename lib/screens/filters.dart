@@ -49,7 +49,7 @@ class _FiltersState extends State<Filters> {
             padding: EdgeInsets.all(20),
             child: Text(
               'Adjust your meal selection',
-              style: TextStyle(fontFamily: 'Raleway', fontSize: 20),
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           Expanded(

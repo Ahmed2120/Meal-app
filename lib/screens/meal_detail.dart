@@ -59,7 +59,7 @@ class MealDetail extends StatelessWidget {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: Text(mealDetail.ingredients![index]),
+                  child: Text(mealDetail.ingredients![index], style: TextStyle(color: Colors.black)),
                 ),
               ),
               itemCount: mealDetail.ingredients?.length,
@@ -72,7 +72,7 @@ class MealDetail extends StatelessWidget {
                   leading: CircleAvatar(
                     child: Text('# ${index + 1}'),
                   ),
-                  title: Text(mealDetail.steps![index]),
+                  title: Text(mealDetail.steps![index], style: TextStyle(color: Colors.black)),
                 ),
                   Divider()
                 ]

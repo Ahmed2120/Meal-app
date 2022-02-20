@@ -14,6 +14,8 @@ class MealProvider with ChangeNotifier {
     'isLactoseFree': false,
   };
 
+  bool isDark = false;
+
   void setFilters() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isVegetarian', filters['isVegetarian']!);
@@ -35,6 +37,7 @@ class MealProvider with ChangeNotifier {
         favorites.add(DUMMY_MEALS.firstWhere((meal) => meal.id == i));
       }
     }
+    isDark = prefs.getBool('isDark')?? false;
     notifyListeners();
   }
 
@@ -55,5 +58,13 @@ class MealProvider with ChangeNotifier {
 
   bool isFavorite(String mealId) {
     return favorites.any((meal) => meal.id == mealId);
+  }
+
+  void toggleMode(bool newMode) async{
+    final prefs = await SharedPreferences.getInstance();
+    isDark = newMode;
+    notifyListeners();
+
+    prefs.setBool('isDark', isDark);
   }
 }
