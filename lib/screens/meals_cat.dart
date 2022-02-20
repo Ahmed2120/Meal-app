@@ -36,13 +36,20 @@ class _MealCatState extends State<MealCat> {
 
   @override
   Widget build(BuildContext context) {
-
+  bool isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+  var dw = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
           title: Text(categoryTitle.toString()),
         ),
-        body: ListView.builder(
+        body: GridView.builder(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: dw <= 400 ? 400 : 500,
+            childAspectRatio: isLandScape ? dw / (dw*0.85) : dw / (dw*0.7),
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0,
+          ),
           itemBuilder: (ctx, index) {
             return MealItem(
               id: mealsCat[index].id,

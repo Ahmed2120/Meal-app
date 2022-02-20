@@ -33,9 +33,39 @@ class MealDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+    var dw = MediaQuery.of(context).size.width;
+
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
     final mealDetail = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
     final pro = Provider.of<MealProvider>(context);
+
+    var ingredients = ListView.builder(
+      itemBuilder: (ctx, index) => Card(
+        color: Colors.amber,
+        child: Padding(
+          padding:
+          const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: Text(mealDetail.ingredients![index], style: TextStyle(color: Colors.black)),
+        ),
+      ),
+      itemCount: mealDetail.ingredients?.length,
+    );
+
+    var steps = ListView.builder(
+      itemBuilder: (ctx, index) => Column(
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                child: Text('# ${index + 1}'),
+              ),
+              title: Text(mealDetail.steps![index], style: TextStyle(color: Colors.black)),
+            ),
+            Divider()
+          ]
+      ),
+      itemCount: mealDetail.steps?.length,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -47,38 +77,36 @@ class MealDetail extends StatelessWidget {
             Container(
               height: 300,
               width: double.infinity,
-              child: Image.network(
-                mealDetail.imgUrl.toString(),
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: mealDetail.id!,
+                child: Image.network(
+                  mealDetail.imgUrl.toString(),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            sectionTitle(context, 'Ingredients'),
-            sectionSteps(ListView.builder(
-              itemBuilder: (ctx, index) => Card(
-                color: Colors.amber,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: Text(mealDetail.ingredients![index], style: TextStyle(color: Colors.black)),
+            if(isLandScape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    sectionTitle(context, 'Ingredients'),
+                    sectionSteps(ingredients),
+                  ],
                 ),
-              ),
-              itemCount: mealDetail.ingredients?.length,
-            )),
-            sectionTitle(context, 'Steps'),
-            sectionSteps(ListView.builder(
-              itemBuilder: (ctx, index) => Column(
-                children: [
-                  ListTile(
-                  leading: CircleAvatar(
-                    child: Text('# ${index + 1}'),
-                  ),
-                  title: Text(mealDetail.steps![index], style: TextStyle(color: Colors.black)),
+                Column(
+                  children: [
+                    sectionTitle(context, 'Steps'),
+                    sectionSteps(steps),
+                  ],
                 ),
-                  Divider()
-                ]
-              ),
-              itemCount: mealDetail.steps?.length,
-            )),
+              ],
+            ),
+            if(!isLandScape) sectionTitle(context, 'Ingredients'),
+            if(!isLandScape) sectionSteps(ingredients),
+            if(!isLandScape) sectionTitle(context, 'Steps'),
+            if(!isLandScape) sectionSteps(steps),
           ],
         ),
       ),
